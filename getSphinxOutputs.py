@@ -14,7 +14,7 @@ for row in indat:
         wavfilename = '/Users/awarlau/RamsdellWarlaumontCollab/' + row[IDCol] + '_clips_ch1_16000/ch1_16000_' + row[WavFilenameCol]
         print(wavfilename)
         # Run the Sphinx command and save its hypothesized phones to a variable called phones
-        phones = subprocess.check_output(['pocketsphinx_continuous', '-infile', wavfilename, '-hmm', '/Users/awarlau/RamsdellWarlaumontCollab/SyllableDetectionCode/pocketsphinx-master/model/en-us/en-us', '-allphone', '/Users/awarlau/RamsdellWarlaumontCollab/SyllableDetectionCode/pocketsphinx-master/model/en-us/en-us-phone.lm.bin', '-backtrace', 'yes', '-beam', '1e-20', '-pbeam', '1e-20', '-lw', '2.0'], stderr=open(os.devnull, 'w'))
+        phones = subprocess.check_output(['pocketsphinx_continuous', '-infile', wavfilename, '-hmm', '/Users/awarlau/RamsdellWarlaumontCollab/CountInfantSyllables/pocketsphinx-master/model/en-us/en-us', '-allphone', '/Users/awarlau/RamsdellWarlaumontCollab/CountInfantSyllables/pocketsphinx-master/model/en-us/en-us-phone.lm.bin', '-backtrace', 'yes', '-beam', '1e-20', '-pbeam', '1e-20', '-lw', '2.0'], stderr=open(os.devnull, 'w'))
         sphout = phones.replace('\n',' ')
         phonelist = sphout.split(" ")
         concnt = sum(1 for p in phonelist if p=="B" or p=="CH" or p=="D" or p=="DH" or p=="F" or p=="G" or p=="JH" or p=="K" or p=="L" or p=="M" or p=="N" or p=="NG" or p=="P" or p=="R" or p=="S" or p=="SH" or p=="T" or p=="TH" or p=="V" or p=="W" or p=="Y" or p=="Z" or p=="ZH") # Excluding "HH"
