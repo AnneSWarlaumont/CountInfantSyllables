@@ -9,14 +9,8 @@ vocdat = read.csv('~/RamsdellWarlaumontCollab/vocdat.csv',header=T)
 
 # Remove the rows where the human listener entered "x".
 # "x" was entered when the listener thought the utterance came from someone other than the kid.
-vocdat = subset(vocdat,((humnumsyl!="x")|is.na(humnumsyl))&((humnumsyl2!="x")|is.na(humnumsyl2))&((humrhy!="x")|is.na(humrhy))&((humrhy2!="x")|is.na(humrhy2))&((hum2numanysyl!="x")|is.na(hum2numanysyl))&((hum2numcansyl!="x")|is.na(hum2numcansyl))&((humnumanysyl_awarlaumont2_1!="x")|is.na(humnumanysyl_awarlaumont2_1))&((humnumcansyl_awarlaumont2_1!="x")|is.na(humnumcansyl_awarlaumont2_1))&((humnumanysyl_afontana5_1!="x")|is.na(humnumanysyl_afontana5_1))&((humnumcansyl_afontana5_1!="x")|is.na(humnumcansyl_afontana5_1)))
+vocdat = subset(vocdat,((humnumanysyl_awarlaumont2_1!="x")|is.na(humnumanysyl_awarlaumont2_1))&((humnumcansyl_awarlaumont2_1!="x")|is.na(humnumcansyl_awarlaumont2_1))&((humnumanysyl_afontana5_1!="x")|is.na(humnumanysyl_afontana5_1))&((humnumcansyl_afontana5_1!="x")|is.na(humnumcansyl_afontana5_1)))
 
-vocdat$humnumsyl = as.numeric(as.character(vocdat$humnumsyl))
-vocdat$humnumsyl2 = as.numeric(as.character(vocdat$humnumsyl2))
-vocdat$humrhy = as.numeric(as.character(vocdat$humrhy))
-vocdat$humrhy2 = as.numeric(as.character(vocdat$humrhy2))
-vocdat$hum2numanysyl = as.numeric(as.character(vocdat$hum2numanysyl))
-vocdat$hum2numcansyl = as.numeric(as.character(vocdat$hum2numcansyl))
 vocdat$humnumanysyl_awarlaumont2_1 = as.numeric(as.character(vocdat$humnumanysyl_awarlaumont2_1))
 vocdat$humnumcansyl_awarlaumont2_1 = as.numeric(as.character(vocdat$humnumcansyl_awarlaumont2_1))
 vocdat$humnumanysyl_afontana5_1 = as.numeric(as.character(vocdat$humnumanysyl_afontana5_1))
@@ -33,12 +27,6 @@ vocdat$numlmksyl[is.na(vocdat$numlmksyl)] = 0
 cor.test(vocdat$numsalons,vocdat$AgeInDays,method="spearman",exact=F)
 cor.test(vocdat$numlmksyl,vocdat$AgeInDays,method="spearman",exact=F)
 cor.test(vocdat$numdjwsyl,vocdat$AgeInDays,method="spearman",exact=F)
-cor.test(vocdat$humrhy,vocdat$AgeInDays,method="spearman",exact=F,na.rm=T)
-cor.test(vocdat$humnumsyl,vocdat$AgeInDays,method="spearman",exact=F,na.rm=T)
-cor.test(vocdat$hum2numanysyl,vocdat$AgeInDays,method="spearman",exact=F,na.rm=T)
-cor.test(vocdat$hum2numcansyl,vocdat$AgeInDays,method="spearman",exact=F,na.rm=T)
-cor.test(vocdat$hum2numcansyl/vocdat$hum2numanysyl,vocdat$AgeInDays,method="spearman",exact=F,na.rm=T)
-cor.test(vocdat$hum2numcansyl/vocdat$DurS,vocdat$AgeInDays,method="spearman",exact=F,na.rm=T)
 cor.test(vocdat$humnumanysyl_awarlaumont2_1,vocdat$AgeInDays,method="spearman",exact=F,na.rm=T)
 cor.test(vocdat$humnumcansyl_awarlaumont2_1,vocdat$AgeInDays,method="spearman",exact=F,na.rm=T)
 cor.test(vocdat$humnumcansyl_awarlaumont2_1/vocdat$humnumanysyl_awarlaumont2_1,vocdat$AgeInDays,method="spearman",exact=F,na.rm=T)
@@ -49,63 +37,27 @@ cor.test(vocdat$humnumcansyl_afontana5_1/vocdat$humnumanysyl_afontana5_1,vocdat$
 cor.test(vocdat$humnumcansyl_afontana5_1/vocdat$DurS,vocdat$AgeInDays,method="spearman",exact=F,na.rm=T)
 
 # # Get correlations between the automated measures and the human judgments
-cor.test(vocdat$numsalons,vocdat$humrhy,method="spearman",exact=F,na.rm=T)
-cor.test(vocdat$numsalons,vocdat$humnumsyl,method="spearman",exact=F,na.rm=T)
 cor.test(vocdat$numsalons,vocdat$humnumanysyl_awarlaumont2_1,method="spearman",exact=F,na.rm=T)
 cor.test(vocdat$numsalons,vocdat$humnumcansyl_awarlaumont2_1,method="spearman",exact=F,na.rm=T)
 cor.test(vocdat$numsalons,vocdat$humnumanysyl_afontana5_1,method="spearman",exact=F,na.rm=T)
 cor.test(vocdat$numsalons,vocdat$humnumcansyl_afontana5_1,method="spearman",exact=F,na.rm=T)
-cor.test(vocdat$numlmksyl,vocdat$humrhy,method="spearman",exact=F,na.rm=T)
-cor.test(vocdat$numlmksyl,vocdat$humnumsyl,method="spearman",exact=F,na.rm=T)
 cor.test(vocdat$numlmksyl,vocdat$humnumanysyl_awarlaumont2_1,method="spearman",exact=F,na.rm=T)
 cor.test(vocdat$numlmksyl,vocdat$humnumcansyl_awarlaumont2_1,method="spearman",exact=F,na.rm=T)
 cor.test(vocdat$numlmksyl,vocdat$humnumanysyl_afontana5_1,method="spearman",exact=F,na.rm=T)
 cor.test(vocdat$numlmksyl,vocdat$humnumcansyl_afontana5_1,method="spearman",exact=F,na.rm=T)
-cor.test(vocdat$numdjwsyl,vocdat$humrhy,method="spearman",exact=F,na.rm=T)
-cor.test(vocdat$numdjwsyl,vocdat$humnumsyl,method="spearman",exact=F,na.rm=T)
 cor.test(vocdat$numdjwsyl,vocdat$humnumanysyl_awarlaumont2_1,method="spearman",exact=F,na.rm=T)
 cor.test(vocdat$numdjwsyl,vocdat$humnumcansyl_awarlaumont2_1,method="spearman",exact=F,na.rm=T)
 cor.test(vocdat$numdjwsyl,vocdat$humnumanysyl_afontana5_1,method="spearman",exact=F,na.rm=T)
 cor.test(vocdat$numdjwsyl,vocdat$humnumcansyl_afontana5_1,method="spearman",exact=F,na.rm=T)
-
-# # Get correlation between the human-judged rhythmicity and the human-judged number of syllables
-# cor.test(vocdat$humrhy,vocdat$humnumsyl,method="spearman",exact=F,na.rm=T)
-
-# Get correlation between the human2-judged number of syllables of any type and the human2-judged number of canonical syllables
-cor.test(vocdat$hum2numanysyl,vocdat$hum2numcansyl,method="spearman",exact=F,na.rm=T)
-
-# # Get human intrarater correlations
-cor.test(vocdat$humrhy,vocdat$humrhy2,method="spearman",exact=F,na.rm=T)
-cor.test(vocdat$humnumsyl,vocdat$humnumsyl2,method="spearman",exact=F,na.rm=T)
-
-# Get human and human2 interrater correlations
-cor.test(vocdat$humrhy,vocdat$hum2numanysyl,method="spearman",exact=F,na.rm=T)
-cor.test(vocdat$humnumsyl,vocdat$hum2numcansyl,method="spearman",exact=F,na.rm=T)
-cor.test(vocdat$humnumsyl,vocdat$hum2numanysyl,method="spearman",exact=F,na.rm=T)
-cor.test(vocdat$humrhy,vocdat$hum2numcansyl,method="spearman",exact=F,na.rm=T)
-nrow(subset(vocdat,!is.na(humrhy)&!is.na(hum2numanysyl))) # How many points were included in the above interrater correlations?
 
 # Get awarlaumont2_1 and afontana5_1 interrater correlations
 cor.test(vocdat$humnumanysyl_awarlaumont2_1,vocdat$humnumanysyl_afontana5_1,method="spearman",exact=F,na.rm=T)
 cor.test(vocdat$humnumcansyl_awarlaumont2_1,vocdat$humnumcansyl_afontana5_1,method="spearman",exact=F,na.rm=T)
 nrow(subset(vocdat,!is.na(humnumcansyl_awarlaumont2_1)&!is.na(humnumcansyl_afontana5_1))) # How many points were included in the above interrater correlations?
 
-# Get human (1) and afontana5_1 interrater correlations
-cor.test(vocdat$humnumsyl,vocdat$humnumcansyl_afontana5_1,method="spearman",exact=F,na.rm=T)
-nrow(subset(vocdat,!is.na(humnumsyl)&!is.na(humnumcansyl_afontana5_1))) # How many points were included in the above interrater correlation?
-
-# Get human (1) and awarlaumont2_1 interrater correlations
-cor.test(vocdat$humnumsyl,vocdat$humnumcansyl_awarlaumont2_1,method="spearman",exact=F,na.rm=T)
-nrow(subset(vocdat,!is.na(humnumsyl)&!is.na(humnumcansyl_awarlaumont2_1))) # How many points were included in the above interrater correlation?
-
-# Get human2 and awarlaumont2_1 intrarater correlations
-cor.test(vocdat$hum2numanysyl,vocdat$humnumanysyl_awarlaumont2_1,method="spearman",exact=F,na.rm=T)
-cor.test(vocdat$hum2numcansyl,vocdat$humnumcansyl_awarlaumont2_1,method="spearman",exact=F,na.rm=T)
-nrow(subset(vocdat,!is.na(hum2numcansyl)&!is.na(humnumcansyl_awarlaumont2_1))) # How many points were included in the above intrarater correlations?
-
 # Get day-level data
 daydat = data.frame(matrix(NA,nrow=1,ncol=13))
-names(daydat) = c('ID','AgeInDays','AveDurMs','AveDurS','AveNumSalOns','AveNumLmkSyl','AveNumDjwSyl','AveHumNumSyl','AveHumNumSyl2','AveHumRhy','AveHumRhy2','AveHum2NumCanSyl','AveHum2NumAnySyl')
+names(daydat) = c('ID','AgeInDays','AveDurMs','AveDurS','AveNumSalOns','AveNumLmkSyl','AveNumDjwSyl','AveHumNumAnySyl_awarlaumont2_1','AveHumNumCanSyl_awarlaumont2_1','AveHumNumAnySyl_afontana5_1','AveHumNumCanSyl_afontana5_1')
 daycnt = 1
 for (id in levels(vocdat$ID)){
 	childdat = subset(vocdat,ID==id)
@@ -121,165 +73,38 @@ for (id in levels(vocdat$ID)){
 		daydat$AveNumSalOns[daycnt] = mean(subvocdat$numsalons)
 		daydat$AveNumLmkSyl[daycnt] = mean(subvocdat$numlmksyl)
 		daydat$AveNumDjwSyl[daycnt] = mean(subvocdat$numdjwsyl)
-		daydat$AveHumNumSyl[daycnt] = mean(subvocdat$humnumsyl,na.rm=T)
-		daydat$AveHumNumSyl2[daycnt] = mean(subvocdat$humnumsyl2,na.rm=T)
-		daydat$AveHumRhy[daycnt] = mean(subvocdat$humrhy,na.rm=T)
-		daydat$AveHumRhy2[daycnt] = mean(subvocdat$humrhy2,na.rm=T)
-		daydat$AveHum2NumCanSyl[daycnt] = mean(subvocdat$hum2numcansyl,na.rm=T)
-		daydat$AveHum2NumAnySyl[daycnt] = mean(subvocdat$hum2numanysyl,na.rm=T)
+		daydat$AveHumNumAnySyl_awarlaumont2_1[daycnt] = mean(subvocdat$humnumanysyl_awarlaumont2_1,na.rm=T)
+		daydat$AveHumNumCanSyl_awarlaumont2_1[daycnt] = mean(subvocdat$humnumcansyl_awarlaumont2_1,na.rm=T)
+		daydat$AveHumNumAnySyl_afontana5_1[daycnt] = mean(subvocdat$humnumanysyl_afontana5_1,na.rm=T)
+		daydat$AveHumNumAnySyl_awarlaumont2_1[daycnt] = mean(subvocdat$humnumanysyl_awarlaumont2_1,na.rm=T)
 		daydat
 		daycnt = daycnt + 1
 	}
 }
 
-# # Predict age on date of recording
-
-# dayautsyllm = lmer(scale(AgeInDays)~scale(AveNumSalOns)+scale(AveNumLmkSyl)+scale(AveNumDjwSyl)+(1|ID),dat=daydat)
-# summary(dayautsyllm)
-# quartz(); plot(predict(dayautsyllm),daydat$AgeInDays)
-
-# dayhumsyllm = lmer(scale(AgeInDays)~scale(AveHumNumSyl)+(1|ID),dat=daydat)
-# summary(dayhumsyllm)
-# quartz(); plot(predict(dayhumsyllm),daydat$AgeInDays)
-
-# dayhum2cansyllm = lmer(scale(AgeInDays)~scale(AveHum2NumCanSyl)+(1|ID),dat=daydat)
-# summary(dayhum2cansyllm)
-# quartz(); plot(predict(dayhum2cansyllm),daydat$AgeInDays)
-
-
-# # Predict age on date of recording based on average duration of vocalizations on that day
-
-# daydurlm = lmer(scale(AgeInDays)~scale(AveDurS)+(1|ID),dat=daydat)
-# summary(daydurlm)
-# quartz(); plot(predict(daydurlm),daydat$AgeInDays)
-
-
-# # Predict age on date of recording based on average syllables divided by average duration of utterance on that date
-
-# dayautsylperslm = lmer(scale(AgeInDays)~scale(AveNumSalOns/AveDurS)+scale(AveNumLmkSyl/AveDurS)+scale(AveNumDjwSyl/AveDurS) + (1|ID),dat=daydat)
-# summary(dayautsylperslm)
-# quartz(); plot(predict(dayautsylperslm),daydat$AgeInDays)
-
-# #Including random slopes:
-# dayautsylperslm = lmer(scale(AgeInDays)~scale(AveNumSalOns/AveDurS)+scale(AveNumLmkSyl/AveDurS)+scale(AveNumDjwSyl/AveDurS) + (scale(AveNumSalOns/AveDurS)|ID) + (scale(AveNumLmkSyl/AveDurS)|ID) + (scale(AveNumDjwSyl/AveDurS)|ID),dat=daydat)
-# summary(dayautsylperslm)
-# quartz(); plot(predict(dayautsylperslm),daydat$AgeInDays)
-
-# dayhumsylperslm = lmer(scale(AgeInDays)~scale(AveHumNumSyl/AveDurS) + (1|ID),dat=daydat)
-# summary(dayhumsylperslm)
-# quartz(); plot(predict(dayhumsylperslm),daydat$AgeInDays)
-
-# # Including random slopes:
-# dayhumsylperslm = lmer(scale(AgeInDays)~scale(AveHumNumSyl/AveDurS) + (scale(AveHumNumSyl/AveDurS)|ID),dat=daydat)
-# summary(dayhumsylperslm)
-# quartz(); plot(predict(dayhumsylperslm),daydat$AgeInDays)
-
-
 # Get leave-one-child-out cross-validation predictions
+# Pilot work showed gam to be better than pca and svr
+# Pilot work showed equalizing category counts to provide better results
 
-vocdat$looautsylest = rep(NA,nrow(vocdat)) #Initialize the column that will hold the cross-validation predictions and the actual values
+#Initialize the columns that will hold the cross-validation predictions
+vocdat$looanysylestpcagam_afontana5_1 = rep(NA,nrow(vocdat)) # PCA predicting total syllable count
+vocdat$loocansylestpcagam_afontana5_1 = rep(NA,nrow(vocdat)) # PCA predicting canonical syllable count
+vocdat$looanysylestsalgam_afontana5_1 = rep(NA,nrow(vocdat)) # Salience predicting total syllable count
+vocdat$looanysylestlmkgam_afontana5_1 = rep(NA,nrow(vocdat)) # Salience predicting canonical syllable count
+vocdat$looanysylestdjwgam_afontana5_1 = rep(NA,nrow(vocdat)) # de Jong & Wempe predicting total syllable count
+vocdat$loocansylestsalgam_afontana5_1 = rep(NA,nrow(vocdat)) # de Jong & Wempe predicting canonical syllable count
+vocdat$loocansylestlmkgam_afontana5_1 = rep(NA,nrow(vocdat)) # Landmarks predictiong total syllable count
+vocdat$loocansylestdjwgam_afontana5_1 = rep(NA,nrow(vocdat)) # Landmarks predicting canonical syllable count
 
-vocdat$looautsylestgam = rep(NA,nrow(vocdat))
-vocdat$looautrhyestgam = rep(NA,nrow(vocdat))
-
-vocdat$loosalsylest = rep(NA,nrow(vocdat))
-vocdat$loolmksylest = rep(NA,nrow(vocdat))
-vocdat$loodjwsylest = rep(NA,nrow(vocdat))
-
-vocdat$looauthum2cansylestgam = rep(NA,nrow(vocdat))
-vocdat$looauthum2anysylestgam = rep(NA,nrow(vocdat))
-vocdat$looauthum2cananysylestgam = rep(NA,nrow(vocdat))
-
-daydat$looautsylest = rep(NA,nrow(daydat))
-daydat$looautsylpersest = rep(NA,nrow(daydat))
-
-vocdat$loosylestpcaglm = rep(NA,nrow(vocdat))
-vocdat$loosylestpcagam = rep(NA,nrow(vocdat))
-vocdat$loosylestpcasvr = rep(NA,nrow(vocdat))
-
-vocdat$loosylestpcagam_afontana5_1 = rep(NA,nrow(vocdat))
-
-vocdat$loosylestpcagameq = rep(NA,nrow(vocdat))
-
-for (id in levels(vocdat$ID)){ # for each child
-
-	# looautsyllm = glm(humnumsyl~numsalons+numlmksyl+numdjwsyl,dat=subset(vocdat,(ID!=id) & !is.na(humnumsyl)),family=poisson)
-	# pchisq(summary(looautsyllm)$deviance,summary(looautsyllm)$df.residual) # Test that Poisson model assumptions are met: http://datavoreconsulting.com/programming-tips/count-data-glms-choosing-poisson-negative-binomial-zero-inflated-poisson/
-	# vocdat$looautsylest[vocdat$ID==id] = predict(looautsyllm,newdata = subset(vocdat,ID==id), type = "response")
-
-	# looautsylgam = gam(humnumsyl~numsalons+numlmksyl+numdjwsyl,dat=subset(vocdat,(ID!=id) & !is.na(humnumsyl)))
-	# vocdat$looautsylestgam[vocdat$ID==id] = predict(looautsylgam,newdata = subset(vocdat,ID==id), type = "response")
-
-	loosalsyllm = glm(humnumsyl~numsalons,dat=subset(vocdat,(ID!=id) & !is.na(humnumsyl)),family=poisson)
-	vocdat$loosalsylest[vocdat$ID==id] = predict(loosalsyllm,newdata = subset(vocdat,ID==id), type = "response")
+for (id in levels(vocdat$ID)){ # for each child to be left out
 	
-	loolmksyllm = glm(humnumsyl~numlmksyl,dat=subset(vocdat,(ID!=id) & !is.na(humnumsyl)),family=poisson)
-	vocdat$loolmksylest[vocdat$ID==id] = predict(loolmksyllm,newdata = subset(vocdat,ID==id), type = "response")
-	
-	loodjwsyllm = glm(humnumsyl~numdjwsyl,dat=subset(vocdat,(ID!=id) & !is.na(humnumsyl)),family=poisson)
-	vocdat$loodjwsylest[vocdat$ID==id] = predict(loodjwsyllm,newdata = subset(vocdat,ID==id), type = "response")
-	
-	# loodayautsyllm = lm(AveHumNumSyl~scale(AveNumSalOns)+scale(AveNumLmkSyl)+scale(AveNumDjwSyl),dat=subset(daydat,ID!=id))
-	# daydat$looautsylest[daydat$ID==id] = predict(loodayautsyllm,newdata = subset(daydat,ID==id), type = "response")
-	
-	# loodayautsylperslm = lm(AveHumNumSyl/AveDurS~scale(AveNumSalOns/AveDurS)+scale(AveNumLmkSyl/AveDurS)+scale(AveNumDjwSyl/AveDurS),dat=subset(daydat,ID!=id))
-	# daydat$looautsylpersest[daydat$ID==id] = predict(loodayautsylperslm,newdata = subset(daydat,ID==id), type = "response")
-	
-	looautsyllm = glm(humnumsyl~numsalons+numlmksyl+numdjwsyl+DurS,dat=subset(vocdat,(ID!=id) & !is.na(humnumsyl)),family=poisson)
-	pchisq(summary(looautsyllm)$deviance,summary(looautsyllm)$df.residual) # Test that Poisson model assumptions are met: http://datavoreconsulting.com/programming-tips/count-data-glms-choosing-poisson-negative-binomial-zero-inflated-poisson/
-	vocdat$looautsylest[vocdat$ID==id] = predict(looautsyllm,newdata = subset(vocdat,ID==id), type = "response")
-
-	looautsylgam = gam(humnumsyl~numsalons+numlmksyl+numdjwsyl+DurS,dat=subset(vocdat,(ID!=id) & !is.na(humnumsyl)))
-	vocdat$looautsylestgam[vocdat$ID==id] = predict(looautsylgam,newdata = subset(vocdat,ID==id), type = "response")
-	
-	looautrhygam = gam(humrhy~numsalons+numlmksyl+numdjwsyl+DurS,dat=subset(vocdat,(ID!=id) & !is.na(humrhy)))
-	vocdat$looautrhyestgam[vocdat$ID==id] = predict(looautrhygam,newdata = subset(vocdat,ID==id), type = "response")
-	
-	looauthum2cansylgam = gam(hum2numcansyl~numsalons+numlmksyl+numdjwsyl+DurS,dat=subset(vocdat,(ID!=id) & !is.na(hum2numcansyl)))
-	vocdat$looauthum2cansylestgam[vocdat$ID==id] = predict(looauthum2cansylgam,newdata = subset(vocdat,ID==id), type = "response")
-	
-	looauthum2anysylgam = gam(hum2numanysyl~numsalons+numlmksyl+numdjwsyl+DurS,dat=subset(vocdat,(ID!=id) & !is.na(hum2numanysyl)))
-	vocdat$looauthum2anysylestgam[vocdat$ID==id] = predict(looauthum2anysylgam,newdata = subset(vocdat,ID==id), type = "response")
-	
-	looauthum2cananysylgam = gam(hum2numcansyl/hum2numanysyl~numsalons+numlmksyl+numdjwsyl+DurS,dat=subset(vocdat,(ID!=id) & !is.na(hum2numanysyl)))
-	vocdat$looauthum2cananysylestgam[vocdat$ID==id] = predict(looauthum2cananysylgam,newdata = subset(vocdat,ID==id), type = "response")
-	
-	loodayautsyllm = lm(AveHumNumSyl~scale(AveNumSalOns)+scale(AveNumLmkSyl)+scale(AveNumDjwSyl)+scale(AveDurS),dat=subset(daydat,ID!=id))
-	daydat$looautsylest[daydat$ID==id] = predict(loodayautsyllm,newdata = subset(daydat,ID==id), type = "response")
-	
-	loodayautsylperslm = lm(AveHumNumSyl/AveDurS~scale(AveNumSalOns/AveDurS)+scale(AveNumLmkSyl/AveDurS)+scale(AveNumDjwSyl/AveDurS),dat=subset(daydat,ID!=id))
-	daydat$looautsylpersest[daydat$ID==id] = predict(loodayautsylperslm,newdata = subset(daydat,ID==id), type = "response")
-	
-	tempPreProcFunction = preProcess(subset(vocdat,(ID!=id) & !is.na(humnumsyl))[,c('DurMs','numsalons','numlmksyl','numdjwsyl')],method=c('BoxCox','center','scale','pca')) # https://tgmstat.wordpress.com/2013/11/28/computing-and-visualizing-pca-in-r/#ref2
-	trainPreProcValues = predict(tempPreProcFunction,subset(vocdat,(ID!=id) & !is.na(humnumsyl))[,c('DurMs','numsalons','numlmksyl','numdjwsyl')])
-	testPreProcValues = predict(tempPreProcFunction,subset(vocdat,(ID==id))[,c('DurMs','numsalons','numlmksyl','numdjwsyl')])
-	traindat = trainPreProcValues
-	traindat$humnumsyl = subset(vocdat,(ID!=id) & !is.na(humnumsyl))$humnumsyl
-	loosylestpcagam = gam(humnumsyl ~ PC1 + PC2 + PC3 + PC4, dat = traindat)
-	vocdat$loosylestpcagam[vocdat$ID==id] = predict(loosylestpcagam,newdata = testPreProcValues,type="response")
-	loosylestpcaglm = glm(humnumsyl ~ PC1 + PC2 + PC3 + PC4, dat = traindat, family=poisson)
-	vocdat$loosylestpcaglm[vocdat$ID==id] = predict(loosylestpcaglm,newdata = testPreProcValues,type="response")
-	loosylestpcasvr = svm(humnumsyl ~ PC1 + PC2 + PC3 + PC4,traindat) # http://www.svm-tutorial.com/2014/10/support-vector-regression-r/
-	vocdat$loosylestpcasvr[vocdat$ID==id] = predict(loosylestpcasvr,newdata = testPreProcValues,type="response")
-	
-	tempPreProcFunction = preProcess(subset(vocdat,(ID!=id) & !is.na(humnumcansyl_afontana5_1))[,c('DurMs','numsalons','numlmksyl','numdjwsyl')],method=c('BoxCox','center','scale','pca')) # https://tgmstat.wordpress.com/2013/11/28/computing-and-visualizing-pca-in-r/#ref2
-	trainPreProcValues = predict(tempPreProcFunction,subset(vocdat,(ID!=id) & !is.na(humnumcansyl_afontana5_1))[,c('DurMs','numsalons','numlmksyl','numdjwsyl')])
-	testPreProcValues = predict(tempPreProcFunction,subset(vocdat,(ID==id))[,c('DurMs','numsalons','numlmksyl','numdjwsyl')])
-	traindat = trainPreProcValues
-	traindat$humnumcansyl_afontana5_1 = subset(vocdat,(ID!=id) & !is.na(humnumcansyl_afontana5_1))$humnumcansyl_afontana5_1
-	loosylestpcagam_afontana5_1 = gam(humnumcansyl_afontana5_1 ~ PC1 + PC2 + PC3 + PC4, dat = traindat)
-	vocdat$loosylestpcagam_afontana5_1[vocdat$ID==id] = predict(loosylestpcagam_afontana5_1,newdata = testPreProcValues,type="response")
-	
-	# TODO: Modify the following code block to make use of vocdat$humnumcansyl_afontana5_1_categorical
 	# For every # of syllables except the # of syllables with the most frequent exemplars, resample until that # of syllables has the same number of exemplars as the # of exemplars in the max # of syllables category.
-	# Categorize into 0, 1, 2, and 3 or more
-	eqtraindat = subset(vocdat,(ID!=id) & !is.na(humnumcansyl_afontana5_1))
-	eqtraindat$humnumcansyl_afontana5_1[eqtraindat$humnumcansyl_afontana5_1>2] = 3
-	maxexemplars = max(length(eqtraindat$humnumcansyl_afontana5_1[eqtraindat$humnumcansyl_afontana5_1==0]),length(eqtraindat$humnumcansyl_afontana5_1[eqtraindat$humnumcansyl_afontana5_1==1]),length(eqtraindat$humnumcansyl_afontana5_1[eqtraindat$humnumcansyl_afontana5_1==2]),length(eqtraindat$humnumcansyl_afontana5_1[eqtraindat$humnumcansyl_afontana5_1==3]))
+	eqtraindat = subset(vocdat,(ID!=id) & !is.na(humnumcansyl_afontana5_1_categorical))
+	maxexemplars = max(length(eqtraindat$humnumcansyl_afontana5_1_categorical==0),length(eqtraindat$humnumcansyl_afontana5_1_categorical==1),length(eqtraindat$humnumcansyl_afontana5_1_categorical==2),length(eqtraindat$humnumcansyl_afontana5_1_categorical==3))
 	# Resample so all categories have the same number of exemplars
 	for (sylnum in c(0,1,2,3)){
-		exemplarnumdif = maxexemplars - length(eqtraindat$humnumcansyl_afontana5_1[eqtraindat$humnumcansyl_afontana5_1==sylnum])
-		sylnumind = which(eqtraindat$humnumcansyl_afontana5_1 %in% sylnum)
+		exemplarnumdif = maxexemplars - length(eqtraindat$humnumcansyl_afontana5_1_categorical==sylnum)
+		sylnumind = which(eqtraindat$humnumcansyl_afontana5_1_categorical %in% sylnum)
 		newexemplars = sample(sylnumind,size = exemplarnumdif, replace = T)
 		eqtraindat = rbind(eqtraindat,eqtraindat[newexemplars,])
 	}
@@ -287,9 +112,9 @@ for (id in levels(vocdat$ID)){ # for each child
 	trainPreProcValues = predict(tempPreProcFunction,eqtraindat[,c('DurMs','numsalons','numlmksyl','numdjwsyl')])
 	testPreProcValues = predict(tempPreProcFunction,subset(vocdat,(ID==id))[,c('DurMs','numsalons','numlmksyl','numdjwsyl')])
 	traindat = trainPreProcValues
-	traindat$humnumcansyl_afontana5_1 = eqtraindat$humnumcansyl_afontana5_1
-	loosylestpcagameq = gam(humnumcansyl_afontana5_1 ~ PC1 + PC2 + PC3, dat = traindat)
-	vocdat$loosylestpcagameq[vocdat$ID==id] = predict(loosylestpcagameq,newdata = testPreProcValues,type="response")
+	traindat$humnumcansyl_afontana5_1_categorical = eqtraindat$humnumcansyl_afontana5_1_categorical
+	loocansylestpcagam_afontana5_1 = gam(humnumcansyl_afontana5_1_categorical ~ PC1 + PC2 + PC3, dat = traindat)
+	vocdat$loocansylestpcagam_afontana5_1[vocdat$ID==id] = predict(loocansylestpcagam_afontana5_1,newdata = testPreProcValues,type="response")
 	
 }
 
