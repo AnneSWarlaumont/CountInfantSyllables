@@ -55,33 +55,6 @@ cor.test(vocdat$humnumanysyl_awarlaumont2_1,vocdat$humnumanysyl_afontana5_1,meth
 cor.test(vocdat$humnumcansyl_awarlaumont2_1,vocdat$humnumcansyl_afontana5_1,method="spearman",exact=F,na.rm=T)
 nrow(subset(vocdat,!is.na(humnumcansyl_awarlaumont2_1)&!is.na(humnumcansyl_afontana5_1))) # How many points were included in the above interrater correlations?
 
-# Get day-level data
-daydat = data.frame(matrix(NA,nrow=1,ncol=13))
-names(daydat) = c('ID','AgeInDays','AveDurMs','AveDurS','AveNumSalOns','AveNumLmkSyl','AveNumDjwSyl','AveHumNumAnySyl_awarlaumont2_1','AveHumNumCanSyl_awarlaumont2_1','AveHumNumAnySyl_afontana5_1','AveHumNumCanSyl_afontana5_1')
-daycnt = 1
-for (id in levels(vocdat$ID)){
-	childdat = subset(vocdat,ID==id)
-	for (age in levels(as.factor(childdat$AgeInDays))){	
-		if (daycnt > 1){
-			daydat = rbind(daydat,setNames(as.data.frame(matrix(NA,nrow=1,ncol=13)),names(daydat)))
-		}
-		subvocdat = subset(childdat,as.factor(AgeInDays)==age)
-		daydat$ID[daycnt] = id
-		daydat$AgeInDays[daycnt] = as.numeric(age)
-		daydat$AveDurMs[daycnt] = mean(subvocdat$DurMs)
-		daydat$AveDurS[daycnt] = mean(subvocdat$DurS)
-		daydat$AveNumSalOns[daycnt] = mean(subvocdat$numsalons)
-		daydat$AveNumLmkSyl[daycnt] = mean(subvocdat$numlmksyl)
-		daydat$AveNumDjwSyl[daycnt] = mean(subvocdat$numdjwsyl)
-		daydat$AveHumNumAnySyl_awarlaumont2_1[daycnt] = mean(subvocdat$humnumanysyl_awarlaumont2_1,na.rm=T)
-		daydat$AveHumNumCanSyl_awarlaumont2_1[daycnt] = mean(subvocdat$humnumcansyl_awarlaumont2_1,na.rm=T)
-		daydat$AveHumNumAnySyl_afontana5_1[daycnt] = mean(subvocdat$humnumanysyl_afontana5_1,na.rm=T)
-		daydat$AveHumNumAnySyl_awarlaumont2_1[daycnt] = mean(subvocdat$humnumanysyl_awarlaumont2_1,na.rm=T)
-		daydat
-		daycnt = daycnt + 1
-	}
-}
-
 # Get leave-one-child-out cross-validation predictions
 # Pilot work showed gam to be better than pca and svr
 # Pilot work showed equalizing category counts to provide better results
@@ -100,10 +73,10 @@ for (id in levels(vocdat$ID)){ # for each child to be left out
 	
 	# For every # of syllables except the # of syllables with the most frequent exemplars, resample until that # of syllables has the same number of exemplars as the # of exemplars in the max # of syllables category.
 	eqtraindat = subset(vocdat,(ID!=id) & !is.na(humnumcansyl_afontana5_1_categorical))
-	maxexemplars = max(length(eqtraindat$humnumcansyl_afontana5_1_categorical==0),length(eqtraindat$humnumcansyl_afontana5_1_categorical==1),length(eqtraindat$humnumcansyl_afontana5_1_categorical==2),length(eqtraindat$humnumcansyl_afontana5_1_categorical==3))
+	maxexemplars = max(sum(eqtraindat$humnumcansyl_afontana5_1_categorical==0),sum(eqtraindat$humnumcansyl_afontana5_1_categorical==1),sum(eqtraindat$humnumcansyl_afontana5_1_categorical==2),sum(eqtraindat$humnumcansyl_afontana5_1_categorical==3))
 	# Resample so all categories have the same number of exemplars
 	for (sylnum in c(0,1,2,3)){
-		exemplarnumdif = maxexemplars - length(eqtraindat$humnumcansyl_afontana5_1_categorical==sylnum)
+		exemplarnumdif = maxexemplars - sum(eqtraindat$humnumcansyl_afontana5_1_categorical==sylnum)
 		sylnumind = which(eqtraindat$humnumcansyl_afontana5_1_categorical %in% sylnum)
 		newexemplars = sample(sylnumind,size = exemplarnumdif, replace = T)
 		eqtraindat = rbind(eqtraindat,eqtraindat[newexemplars,])
@@ -118,115 +91,68 @@ for (id in levels(vocdat$ID)){ # for each child to be left out
 	
 }
 
-print(cor.test(subset(vocdat,!is.na(humnumsyl2))$humnumsyl,subset(vocdat,!is.na(humnumsyl2))$looautsylestgam,method="spearman",exact=FALSE))
-spearman.ci(subset(vocdat,!is.na(humnumsyl2))$humnumsyl,subset(vocdat,!is.na(humnumsyl2))$looautsylestgam,nrep=1000,conf.level=.95)
+# Human-machine correlation in number of syllables per utterance
+print(cor.test(subset(vocdat,!is.na(humnumcansyl_afontana5_1_categorical))$humnumcansyl_afontana5_1_categorical,subset(vocdat,!is.na(humnumcansyl_afontana5_1_categorical))$loocansylestpcagam_afontana5_1,method="spearman",exact=FALSE))
+spearman.ci(subset(vocdat,!is.na(humnumcansyl_afontana5_1_categorical))$humnumcansyl_afontana5_1_categorical,subset(vocdat,!is.na(humnumcansyl_afontana5_1_categorical))$loocansylestpcagam_afontana5_1,nrep=1000,conf.level=.95)
 
-print(cor.test(subset(vocdat,!is.na(humnumsyl))$humnumsyl,subset(vocdat,!is.na(humnumsyl))$looautsylestgam,method="spearman",exact=FALSE))
-spearman.ci(subset(vocdat,!is.na(humnumsyl))$humnumsyl,subset(vocdat,!is.na(humnumsyl))$looautsylestgam,nrep=1000,conf.level=.95)
+axmax = ceiling(max(c(subset(vocdat,!is.na(humnumcansyl_afontana5_1_categorical))$humnumcansyl_afontana5_1_categorical,subset(vocdat,!is.na(humnumcansyl_afontana5_1_categorical))$loocansylestpcagam_afontana5_1)))
+quartz(width=5,height=5)
+par(mfrow=c(1,1))
+boxplot(loocansylestpcagam_afontana5_1 ~factor(humnumcansyl_afontana5_1_categorical,levels=0:axmax),data=subset(vocdat,!is.na(loocansylestpcagam_afontana5_1)),ylim=c(0,axmax),xlim=c(.5,4.5),main="Machine vs. human syllable counts",xlab="Human-judged canonical syllable count",ylab="Machine-estimated canonical syllable count")
+quartz.save("~/RamsdellWarlaumontCollab/StatisticalResults/hum_vs_mach_canonicalsyllablecounts_afontana5_1.pdf",type="pdf")
 
-print(cor.test(subset(vocdat,!is.na(humnumsyl))$humnumsyl,subset(vocdat,!is.na(humnumsyl))$loosylestpcagam,method="spearman",exact=FALSE))
-spearman.ci(subset(vocdat,!is.na(humnumsyl))$humnumsyl,subset(vocdat,!is.na(humnumsyl))$loosylestpcagam,nrep=1000,conf.level=.95)
+# Get day-level data
+daydat = data.frame(matrix(NA,nrow=1,ncol=13))
+names(daydat) = c('ID','AgeInDays','AveDurMs','AveDurS','AveNumSalOns','AveNumLmkSyl','AveNumDjwSyl','AveHumNumAnySyl_awarlaumont2_1','AveHumNumCanSyl_awarlaumont2_1','AveHumNumAnySyl_afontana5_1','AveHumNumCanSyl_afontana5_1','AveLooCanSylEstPCAGAM_afontana5_1')
+daycnt = 1
+for (id in levels(vocdat$ID)){
+	childdat = subset(vocdat,ID==id)
+	for (age in levels(as.factor(childdat$AgeInDays))){	
+		if (daycnt > 1){
+			daydat = rbind(daydat,setNames(as.data.frame(matrix(NA,nrow=1,ncol=13)),names(daydat)))
+		}
+		subvocdat = subset(childdat,as.factor(AgeInDays)==age)
+		daydat$ID[daycnt] = id
+		daydat$AgeInDays[daycnt] = as.numeric(age)
+		daydat$AveDurMs[daycnt] = mean(subvocdat$DurMs)
+		daydat$AveDurS[daycnt] = mean(subvocdat$DurS)
+		daydat$AveNumSalOns[daycnt] = mean(subvocdat$numsalons)
+		daydat$AveNumLmkSyl[daycnt] = mean(subvocdat$numlmksyl)
+		daydat$AveNumDjwSyl[daycnt] = mean(subvocdat$numdjwsyl)
+		daydat$AveHumNumAnySyl_awarlaumont2_1[daycnt] = mean(subvocdat$humnumanysyl_awarlaumont2_1,na.rm=T)
+		daydat$AveHumNumCanSyl_awarlaumont2_1[daycnt] = mean(subvocdat$humnumcansyl_awarlaumont2_1,na.rm=T)
+		daydat$AveHumNumAnySyl_afontana5_1[daycnt] = mean(subvocdat$humnumanysyl_afontana5_1,na.rm=T)
+		daydat$AveHumNumCanSyl_afontana5_1[daycnt] = mean(subvocdat$humnumcansyl_afontana5_1,na.rm=T)
+		daydat$AveLooCanSylEstPCAGAM_afontana5_1[daycnt] = mean(subvocdat$loocansylestpcagam_afontana5_1)
+		daydat
+		daycnt = daycnt + 1
+	}
+}
 
-print(cor.test(subset(vocdat,!is.na(humnumsyl))$humnumsyl,subset(vocdat,!is.na(humnumsyl))$loosylestpcaglm,method="spearman",exact=FALSE))
-spearman.ci(subset(vocdat,!is.na(humnumsyl))$humnumsyl,subset(vocdat,!is.na(humnumsyl))$loosylestpcaglm,nrep=1000,conf.level=.95)
+# Human-machine correlation in number of syllables per utterance at the day level
+print(cor.test(subset(daydat,!is.na(AveHumNumCanSyl_afontana5_1))$AveLooCanSylEstPCAGAM_afontana5_1,subset(daydat,!is.na(AveHumNumCanSyl_afontana5_1))$AveHumNumCanSyl_afontana5_1,method="spearman",exact=FALSE))
+spearman.ci(subset(daydat,!is.na(AveHumNumCanSyl_afontana5_1))$AveLooCanSylEstPCAGAM_afontana5_1,subset(daydat,!is.na(AveHumNumCanSyl_afontana5_1))$AveHumNumCanSyl_afontana5_1,nrep=1000,conf.level=.95)
 
-print(cor.test(subset(vocdat,!is.na(humnumsyl))$humnumsyl,subset(vocdat,!is.na(humnumsyl))$loosylestpcasvr,method="spearman",exact=FALSE))
-spearman.ci(subset(vocdat,!is.na(humnumsyl))$humnumsyl,subset(vocdat,!is.na(humnumsyl))$loosylestpcasvr,nrep=1000,conf.level=.95)
+# Human-human correlation in number of syllables per utterance at the day level
+print(cor.test(subset(daydat,!is.na(AveHumNumCanSyl_afontana5_1)&!is.na(AveHumNumCanSyl_awarlaumont2_1))$AveHumNumCanSyl_awarlaumont2_1,subset(daydat,!is.na(AveHumNumCanSyl_afontana5_1)&!is.na(AveHumNumCanSyl_awarlaumont2_1))$AveHumNumCanSyl_afontana5_1,method="spearman",exact=FALSE))
+spearman.ci(subset(daydat,!is.na(AveHumNumCanSyl_afontana5_1)&!is.na(AveHumNumCanSyl_awarlaumont2_1))$AveHumNumCanSyl_awarlaumont2_1,subset(daydat,!is.na(AveHumNumCanSyl_afontana5_1)&!is.na(AveHumNumCanSyl_awarlaumont2_1))$AveHumNumCanSyl_afontana5_1,nrep=1000,conf.level=.95)
 
-print(cor.test(subset(vocdat,!is.na(humnumsyl2))$humnumsyl,subset(vocdat,!is.na(humnumsyl2))$humnumsyl2,method="spearman",exact=FALSE))
-spearman.ci(subset(vocdat,!is.na(humnumsyl2))$humnumsyl,subset(vocdat,!is.na(humnumsyl2))$humnumsyl2,nrep=1000,conf.level=.95)
+# Day-level correlation between age and afontana5_1 human-judged syllables per utterance
+print(cor.test(daydat$AgeInDays,daydat$AveHumNumCanSyl_afontana5_1))
+summary(lmer(scale(AgeInDays)~scale(AveHumNumCanSyl_afontana5_1)+(1|ID),dat=daydat))
+summary(lmer(scale(AgeInDays)~scale(AveHumNumCanSyl_afontana5_1)+(scale(AveHumNumCanSyl_afontana5_1)|ID),dat=daydat))
 
-print(cor.test(subset(vocdat,!is.na(humrhy))$humrhy,subset(vocdat,!is.na(humrhy))$looautrhyestgam,method="spearman",exact=FALSE))
-spearman.ci(subset(vocdat,!is.na(humrhy))$humrhy,subset(vocdat,!is.na(humrhy))$looautrhyestgam,nrep=1000,conf.level=.95)
-
-print(cor.test(subset(vocdat,!is.na(humnumcansyl_afontana5_1_categorical))$humnumcansyl_afontana5_1_categorical,subset(vocdat,!is.na(humnumcansyl_afontana5_1_categorical))$loosylestpcagam_afontana5_1,method="spearman",exact=FALSE))
-spearman.ci(subset(vocdat,!is.na(humnumcansyl_afontana5_1_categorical))$humnumcansyl_afontana5_1_categorical,subset(vocdat,!is.na(humnumcansyl_afontana5_1_categorical))$loosylestpcagam_afontana5_1,nrep=1000,conf.level=.95)
-
-print(cor.test(subset(vocdat,!is.na(humnumcansyl_afontana5_1_categorical))$humnumcansyl_afontana5_1_categorical,subset(vocdat,!is.na(humnumcansyl_afontana5_1_categorical))$loosylestpcagameq,method="spearman",exact=FALSE))
-spearman.ci(subset(vocdat,!is.na(humnumcansyl_afontana5_1_categorical))$humnumcansyl_afontana5_1_categorical,subset(vocdat,!is.na(humnumcansyl_afontana5_1_categorical))$loosylestpcagameq,nrep=1000,conf.level=.95)
-
-# Predict the human2-judged number of canonical syllables based on the automatically estimated number of syllables
-print(cor.test(subset(vocdat,!is.na(hum2numcansyl))$hum2numcansyl,subset(vocdat,!is.na(hum2numcansyl))$looauthum2cansylestgam,method="spearman",exact=FALSE))
-spearman.ci(subset(vocdat,!is.na(hum2numcansyl))$hum2numcansyl,subset(vocdat,!is.na(hum2numcansyl))$looauthum2cansylestgam,nrep=1000,conf.level=.95)
-
-# Predict the human2-judged number of syllables of any type based on the automatically estimated number of syllables of any type
-print(cor.test(subset(vocdat,!is.na(hum2numanysyl))$hum2numanysyl,subset(vocdat,!is.na(hum2numanysyl))$looauthum2anysylestgam,method="spearman",exact=FALSE))
-spearman.ci(subset(vocdat,!is.na(hum2numanysyl))$hum2numanysyl,subset(vocdat,!is.na(hum2numanysyl))$looauthum2anysylestgam,nrep=1000,conf.level=.95)
-
-# Predict the human2-judged canonical to any syllable ratio based on the automatically estimated canonical to any syllable ratio
-print(cor.test(subset(vocdat,!is.na(hum2numcansyl))$hum2numcansyl/subset(vocdat,!is.na(hum2numanysyl))$hum2numanysyl,subset(vocdat,!is.na(hum2numcansyl))$looauthum2cananysylestgam,method="spearman",exact=FALSE))
-spearman.ci(subset(vocdat,!is.na(hum2numcansyl))$hum2numcansyl/subset(vocdat,!is.na(hum2numanysyl))$hum2numanysyl,subset(vocdat,!is.na(hum2numcansyl))$looauthum2cananysylestgam,nrep=1000,conf.level=.95)
-
-# Predict the human2-judged canonical to any syllable ratio based on the automatically estimated number of canonical syllables divided by the automatically estimated number of syllables of any time
-print(cor.test(subset(vocdat,!is.na(hum2numcansyl))$hum2numcansyl/subset(vocdat,!is.na(hum2numanysyl))$hum2numanysyl,subset(vocdat,!is.na(hum2numcansyl))$looauthum2cansylestgam/subset(vocdat,!is.na(hum2numanysyl))$looauthum2anysylestgam,method="spearman",exact=FALSE))
-spearman.ci(subset(vocdat,!is.na(hum2numcansyl))$hum2numcansyl/subset(vocdat,!is.na(hum2numanysyl))$hum2numanysyl,subset(vocdat,!is.na(hum2numcansyl))$looauthum2cansylestgam/subset(vocdat,!is.na(hum2numanysyl))$looauthum2anysylestgam,nrep=1000,conf.level=.95)
-
-axmax = ceiling(max(c(subset(vocdat,!is.na(humnumsyl))$humnumsyl,subset(vocdat,!is.na(humnumsyl2))$humnumsyl2,subset(vocdat,!is.na(humnumsyl))$looautsylestgam)))
-quartz(width=9,height=5)
-par(mfrow=c(1,2))
-# Might need to fix xlim in the plots below, now that I've fixed the conversion from character to factor so that 0 doesn't map onto 1 but to 0 etc.
-boxplot(humnumsyl2~factor(humnumsyl,levels=0:axmax),data=subset(vocdat,!is.na(humnumsyl2)),ylim=c(0,axmax),xlim=c(.5,axmax+.5),main="Human vs. human syllable counts",xlab="Human canonical syllable count",ylab="Human coder's second canonical syllable count")
-boxplot(looautsylestgam~factor(humnumsyl,levels=0:axmax),data=subset(vocdat,!is.na(humnumsyl2)),ylim=c(0,axmax),xlim=c(.5,axmax+.5),main="Machine vs. human syllable counts",xlab="Human canonical syllable count",ylab="Machine estimated number of canonical syllables")
-# quartz.save("~/RamsdellWarlaumontCollab/StatisticalAnalyses/hum_vs_mach_canonicalsyllablecounts.pdf",type="pdf")
-
-axmax = ceiling(max(c(subset(vocdat,!is.na(humnumcansyl_afontana5_1_categorical))$humnumcansyl_afontana5_1_categorical,subset(vocdat,!is.na(humnumcansyl_afontana5_1_categorical))$loosylestpcagam_afontana5_1,subset(vocdat,!is.na(humnumcansyl_afontana5_1_categorical))$loosylestpcagameq)))
-quartz(width=9,height=5)
-par(mfrow=c(1,2))
-# Might need to fix xlim in the plots below, now that I've fixed the conversion from character to factor so that 0 doesn't map onto 1 but to 0 etc.
-boxplot(loosylestpcagam_afontana5_1 ~factor(humnumcansyl_afontana5_1_categorical,levels=0:axmax),data=subset(vocdat,!is.na(loosylestpcagam_afontana5_1)),ylim=c(0,axmax),xlim=c(.5,4.5),main="PCA GAM vs. human syllable counts",xlab="Human canonical syllable count",ylab="PCA GAM's estimated canonical syllable count")
-boxplot(loosylestpcagameq~factor(humnumcansyl_afontana5_1_categorical,levels=0:axmax),data=subset(vocdat,!is.na(humnumcansyl_afontana5_1_categorical)),ylim=c(0,axmax),xlim=c(.5,4.5),main="PCA GAM equal categories vs. human syllable counts",xlab="Human canonical syllable count",ylab="PCA GAM equal categories' estimated number of canonical syllables")
-
-print(cor.test(subset(vocdat,!is.na(humnumsyl))$humnumsyl,subset(vocdat,!is.na(humnumsyl))$loosalsylest,method="spearman",exact=FALSE))
-print(cor.test(subset(vocdat,!is.na(humrhy))$humrhy,subset(vocdat,!is.na(humrhy))$loosalsylest,method="spearman",exact=FALSE))
-
-print(cor.test(subset(vocdat,!is.na(humnumsyl))$humnumsyl,subset(vocdat,!is.na(humnumsyl))$loolmksylest,method="spearman",exact=FALSE))
-print(cor.test(subset(vocdat,!is.na(humrhy))$humrhy,subset(vocdat,!is.na(humrhy))$loolmksylest,method="spearman",exact=FALSE))
-
-print(cor.test(subset(vocdat,!is.na(humnumsyl))$humnumsyl,subset(vocdat,!is.na(humnumsyl))$loodjwsylest,method="spearman",exact=FALSE))
-print(cor.test(subset(vocdat,!is.na(humrhy))$humrhy,subset(vocdat,!is.na(humrhy))$loodjwsylest,method="spearman",exact=FALSE))
-
-# Human-machine correlation in number of syllables per utterance at the day level.
-print(cor.test(subset(daydat,!is.na(AveHumNumSyl))$looautsylest,subset(daydat,!is.na(AveHumNumSyl))$AveHumNumSyl,method="spearman",exact=FALSE))
-spearman.ci(subset(daydat,!is.na(AveHumNumSyl))$looautsylest,subset(daydat,!is.na(AveHumNumSyl))$AveHumNumSyl,nrep=1000,conf.level=.95)
-
-# Human-machine correlation in number of syllables per second at the day level.
-print(cor.test(subset(daydat,!is.na(AveHumNumSyl))$looautsylpersest,subset(daydat,!is.na(AveHumNumSyl))$AveHumNumSyl/subset(daydat,!is.na(AveHumNumSyl))$AveDurS,method="spearman",exact=FALSE))
-spearman.ci(subset(daydat,!is.na(AveHumNumSyl))$looautsylpersest,subset(daydat,!is.na(AveHumNumSyl))$AveHumNumSyl/subset(daydat,!is.na(AveHumNumSyl))$AveDurS,nrep=1000,conf.level=.95)
-
-# Human-human intrarater correlation in number of syllables per second at the day level. Probably not enough re-test syllable judgments to make this a stable estimate.
-print(cor.test(subset(daydat,!is.na(AveHumNumSyl2))$AveHumNumSyl/subset(daydat,!is.na(AveHumNumSyl2))$AveDurS,subset(daydat,!is.na(AveHumNumSyl2))$AveHumNumSyl2/subset(daydat,!is.na(AveHumNumSyl2))$AveDurS,method="spearman",exact=FALSE))
-spearman.ci(subset(daydat,!is.na(AveHumNumSyl2))$AveHumNumSyl/subset(daydat,!is.na(AveHumNumSyl2))$AveDurS,subset(daydat,!is.na(AveHumNumSyl2))$AveHumNumSyl2/subset(daydat,!is.na(AveHumNumSyl2))$AveDurS,nrep=1000,conf.level=.95)
-
-print(cor.test(daydat$AgeInDays,daydat$looautsylest))
-summary(lmer(scale(AgeInDays)~scale(looautsylest)+(1|ID),dat=daydat))
-summary(lmer(scale(AgeInDays)~scale(looautsylest)+(scale(looautsylest)|ID),dat=daydat))
-
-print(cor.test(daydat$AgeInDays,daydat$AveHumNumSyl))
-summary(lmer(scale(AgeInDays)~scale(AveHumNumSyl)+(1|ID),dat=daydat))
-summary(lmer(scale(AgeInDays)~scale(AveHumNumSyl)+(scale(AveHumNumSyl)|ID),dat=daydat))
-
-print(cor.test(daydat$AgeInDays,daydat$looautsylpersest))
-summary(lmer(scale(AgeInDays)~scale(looautsylpersest)+(1|ID),dat=daydat))
-summary(lmer(scale(AgeInDays)~scale(looautsylpersest)+(scale(looautsylpersest)|ID),dat=daydat))
-
-print(cor.test(daydat$AgeInDays,daydat$looautsylest/daydat$AveDurS))
-summary(lmer(scale(AgeInDays)~scale(looautsylest/AveDurS)+(1|ID),dat=daydat))
-summary(lmer(scale(AgeInDays)~scale(looautsylest/AveDurS)+(scale(looautsylest/AveDurS)|ID),dat=daydat))
-
-print(cor.test(subset(daydat,!is.na(AveHumNumSyl))$AgeInDays,subset(daydat,!is.na(AveHumNumSyl))$AveHumNumSyl/subset(daydat,!is.na(AveHumNumSyl))$AveDurS))
-summary(lmer(scale(AgeInDays)~scale(AveHumNumSyl/AveDurS)+(1|ID),dat=subset(daydat,!is.na(AveHumNumSyl))))
-summary(lmer(scale(AgeInDays)~scale(AveHumNumSyl/AveDurS)+(scale(AveHumNumSyl/AveDurS)|ID),dat=subset(daydat,!is.na(AveHumNumSyl))))
+# Day-level correlation between age and awarlaumont2_1 human-judged syllables per utterance
+print(cor.test(daydat$AgeInDays,daydat$AveHumNumCanSyl_awarlaumont2_1))
+summary(lmer(scale(AgeInDays)~scale(AveHumNumCanSyl_awarlaumont2_1)+(1|ID),dat=subset(daydat,!is.na(AveHumNumCanSyl_awarlaumont2_1))))
+summary(lmer(scale(AgeInDays)~scale(AveHumNumCanSyl_awarlaumont2_1)+(scale(AveHumNumCanSyl_awarlaumont2_1)|ID),dat=subset(daydat,!is.na(AveHumNumCanSyl_awarlaumont2_1))))
 
 # Add titles and axis labels to the plots below.
+# Plot human-judged canonical syllables vs. age and machine-estimated canonical syllables vs. age
 quartz(width=9,height=5)
 par(mfrow=c(1,2))
-plot(subset(daydat,!is.na(AveHumNumSyl))$AgeInDays,subset(daydat,!is.na(AveHumNumSyl))$AveHumNumSyl,main="Human listener",xlab="Age in days",ylab="Human-judged canonical syllables per utterance") 
-abline(lm(subset(daydat,!is.na(AveHumNumSyl))$AveHumNumSyl~subset(daydat,!is.na(AveHumNumSyl))$AgeInDays))
-plot(daydat$AgeInDays,daydat$looautsylest,main="Machine estimation",xlab="Age in days",ylab="Machine estimated canonical syllables per utterance");
-abline(lm(daydat$looautsylest~daydat$AgeInDays))
-quartz.save("~/RamsdellWarlaumontCollab/StatisticalAnalyses/hum_and_mach_syl_vs_age.pdf",type="pdf")
-
-quartz(width=13)
-par(mfrow=c(1,2))
-plot(subset(daydat,!is.na(AveHumNumSyl))$AgeInDays,subset(daydat,!is.na(AveHumNumSyl))$AveHumNumSyl/subset(daydat,!is.na(AveHumNumSyl))$AveDurS); abline(lm(subset(daydat,!is.na(AveHumNumSyl))$AveHumNumSyl/subset(daydat,!is.na(AveHumNumSyl))$AveDurS~subset(daydat,!is.na(AveHumNumSyl))$AgeInDays))
-plot(daydat$AgeInDays,daydat$looautsylpersest); abline(lm(daydat$looautsylpersest~daydat$AgeInDays))
+plot(subset(daydat,!is.na(AveHumNumCanSyl_afontana5_1))$AgeInDays,subset(daydat,!is.na(AveHumNumCanSyl_afontana5_1))$AveHumNumCanSyl_afontana5_1,main="Human listener",xlab="Age in days",ylab="Human-judged canonical syllables per utterance") 
+abline(lm(subset(daydat,!is.na(AveHumNumCanSyl_afontana5_1))$AveHumNumCanSyl_afontana5_1 ~subset(daydat,!is.na(AveHumNumCanSyl_afontana5_1))$AgeInDays))
+plot(daydat$AgeInDays,daydat$AveLooCanSylEstPCAGAM_afontana5_1,main="Machine estimation",xlab="Age in days",ylab="Machine estimated canonical syllables per utterance");
+abline(lm(daydat$AveLooCanSylEstPCAGAM_afontana5_1 ~daydat$AgeInDays))
+quartz.save("~/RamsdellWarlaumontCollab/StatisticalResults/hum_and_mach_syl_vs_age.pdf",type="pdf")
