@@ -1,3 +1,5 @@
+rm(list=ls()); graphics.off()
+
 # Load the files that contain the child info. for each sound, Cecilia's rating for each sound, and the salience onsets for each sound
 vocdat = read.csv('~/RamsdellWarlaumontCollab/session_label_list.csv',header=T)
 
@@ -12,6 +14,7 @@ rm(saldat)
 # Add the automated estimate of number of syllables based on Stevens' landmarks
 lmkdat = read.csv('~/RamsdellWarlaumontCollab/uttlmk.csv',header=T)
 vocdat$numlmksyl = lmkdat$nsyl
+rm(lmkdat)
 
 # Add the de Jong & Wempe estimate of number of syllable nuclei
 djwFiles = list.files(path='~/RamsdellWarlaumontCollab/deJongWempeSyllables/',pattern="*.csv")
@@ -23,6 +26,13 @@ for (djwFile in djwFiles){
 		vocdat$numdjwsyl[vocrow] = djwdat$nsyll[djwvoc]
 	}
 }
+rm(djwFile,djwFiles,djwdat)
+
+# Add the Sphinx estimates of number of consonants and number of vowels
+sphdat = read.csv('~/RamsdellWarlaumontCollab/uttsph.csv',header=T)
+vocdat$numsphcon = sphdat$concnt
+vocdat$numsphvow = sphdat$vowcnt
+rm(sphdat)
 
 # # Add the first set of human ratings of number of syllables and rhythmicity
 # humdat = read.csv('~/RamsdellWarlaumontCollab/CeciliaValdovinos_responses.csv',header=T) # Read in the file
@@ -60,7 +70,6 @@ for (djwFile in djwFiles){
 # rm(hum2dat)
 
 # Add the awarlaumont2_1 human ratings of number of syllables and number of canonical syllables
-# humdat_awarlaumont2_1 = read.csv('~/RamsdellWarlaumontCollab/SyllableDetectionCode/awarlaumont2_1_responses.csv',header=T,na.strings=c("","NA")) # Read in the file
 humdat_awarlaumont2_1 = read.csv('~/RamsdellWarlaumontCollab/SyllableDetectionCode/awarlaumont2_1_responses.csv',header=T) # Read in the file
 vocdat$humnumanysyl_awarlaumont2_1 = rep(NA,nrow(vocdat))
 vocdat$humnumcansyl_awarlaumont2_1 = rep(NA,nrow(vocdat))
@@ -78,7 +87,7 @@ for (lis in 1:nrow(humdat_awarlaumont2_1)){
 rm(humdat_awarlaumont2_1)
 
 # Add the afontana5_1 human ratings of number of syllables and number of canonical syllables
-humdat_afontana5_1 = read.csv('~/RamsdellWarlaumontCollab/SyllableDetectionCode/afontana5_1_responses.csv',header=T,na.strings=c("","NA")) # Read in the file
+humdat_afontana5_1 = read.csv('~/RamsdellWarlaumontCollab/SyllableDetectionCode/afontana5_1_responses.csv',header=T) # Read in the file
 vocdat$humnumanysyl_afontana5_1 = rep(NA,nrow(vocdat))
 vocdat$humnumcansyl_afontana5_1 = rep(NA,nrow(vocdat))
 vocdat$humcrylauveg_afontana5_1 = rep(NA,nrow(vocdat))
@@ -95,7 +104,7 @@ for (lis in 1:nrow(humdat_afontana5_1)){
 rm(humdat_afontana5_1)
 
 # Add the gmacedo_1 human ratings of number of syllables and number of canonical syllables
-humdat_gmacedo_1 = read.csv('~/RamsdellWarlaumontCollab/SyllableDetectionCode/gmacedo_1_responses.csv',header=T,na.strings=c("","NA")) # Read in the file
+humdat_gmacedo_1 = read.csv('~/RamsdellWarlaumontCollab/SyllableDetectionCode/gmacedo_1_responses.csv',header=T) # Read in the file
 vocdat$humnumanysyl_gmacedo_1 = rep(NA,nrow(vocdat))
 vocdat$humnumcansyl_gmacedo_1 = rep(NA,nrow(vocdat))
 vocdat$humcrylauveg_gmacedo_1 = rep(NA,nrow(vocdat))
