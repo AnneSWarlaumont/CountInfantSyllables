@@ -156,15 +156,73 @@ cor.test(vocdat$humnumanysyl_awarlaumont2_1,vocdat$humnumanysyl_afontana5_1,meth
 cor.test(vocdat$humnumcansyl_awarlaumont2_1,vocdat$humnumcansyl_afontana5_1,method="spearman",exact=F,na.rm=T)
 nrow(subset(vocdat,!is.na(humnumcansyl_awarlaumont2_1)&!is.na(humnumcansyl_afontana5_1))) # How many points were included in the above interrater correlations?
 
+# Get awarlaumont2_1_categorical and afontana5_1_categorical interrater correlations
+cor.test(vocdat$humnumanysyl_awarlaumont2_1_categorical,vocdat$humnumanysyl_afontana5_1_categorical,method="spearman",exact=F,na.rm=T)
+cor.test(vocdat$humnumcansyl_awarlaumont2_1_categorical,vocdat$humnumcansyl_afontana5_1_categorical,method="spearman",exact=F,na.rm=T)
+nrow(subset(vocdat,!is.na(humnumcansyl_awarlaumont2_1_categorical)&!is.na(humnumcansyl_afontana5_1_categorical))) # How many points were included in the above interrater correlations?
+
+axmax = ceiling(max(c(subset(vocdat,!is.na(humnumcansyl_awarlaumont2_1_categorical)&!is.na(humnumcansyl_afontana5_1_categorical))$humnumcansyl_awarlaumont2_1_categorical,subset(vocdat,!is.na(humnumcansyl_awarlaumont2_1_categorical)&!is.na(humnumcansyl_afontana5_1_categorical))$humnumcansyl_afontana5_1_categorical)))
+quartz(width=5,height=5)
+par(mfrow=c(1,1))
+boxplot(humnumcansyl_afontana5_1_categorical ~factor(humnumcansyl_awarlaumont2_1_categorical,levels=0:axmax),data=subset(vocdat,!is.na(humnumcansyl_awarlaumont2_1_categorical)&!is.na(humnumcansyl_afontana5_1_categorical)),ylim=c(0,axmax),xlim=c(.5,4.5),main="Listener 1 vs. Listener 2 syllable counts",xlab="Listener 1 canonical syllable count",ylab="Listener 2 canonical syllable count")
+if (nocrylauveg & nooverlap){
+	quartz.save("~/RamsdellWarlaumontCollab/StatisticalResults/awarlaumont2_vs_afontana5_canonicalsyllablecounts_avg_nocrylaughveg_nooverlap.pdf",type="pdf")
+} else if (nocrylauveg & !nooverlap){
+	quartz.save("~/RamsdellWarlaumontCollab/StatisticalResults/awarlaumont2_vs_afontana5_canonicalsyllablecounts_avg_nocrylaughveg.pdf",type="pdf")
+} else if (!nocrylauveg & nooverlap){	
+	quartz.save("~/RamsdellWarlaumontCollab/StatisticalResults/awarlaumont2_vs_afontana5_canonicalsyllablecounts_avg_nooverlap.pdf",type="pdf")
+} else if (!nocrylauveg & !nooverlap){
+	quartz.save("~/RamsdellWarlaumontCollab/StatisticalResults/awarlaumont2_vs_afontana5_canonicalsyllablecounts_avg.pdf",type="pdf")
+}
+
 # Get awarlaumont2_1 and gmacedo_1 interrater correlations
 cor.test(vocdat$humnumanysyl_awarlaumont2_1,vocdat$humnumanysyl_gmacedo_1,method="spearman",exact=F,na.rm=T)
 cor.test(vocdat$humnumcansyl_awarlaumont2_1,vocdat$humnumcansyl_gmacedo_1,method="spearman",exact=F,na.rm=T)
 nrow(subset(vocdat,!is.na(humnumcansyl_awarlaumont2_1)&!is.na(humnumcansyl_gmacedo_1))) # How many points were included in the above interrater correlations?
 
+# Get awarlaumont2_1_categorical and gmacedo_1_categorical interrater correlations
+cor.test(vocdat$humnumanysyl_awarlaumont2_1_categorical,vocdat$humnumanysyl_gmacedo_1_categorical,method="spearman",exact=F,na.rm=T)
+cor.test(vocdat$humnumcansyl_awarlaumont2_1_categorical,vocdat$humnumcansyl_gmacedo_1_categorical,method="spearman",exact=F,na.rm=T)
+nrow(subset(vocdat,!is.na(humnumcansyl_awarlaumont2_1_categorical)&!is.na(humnumcansyl_gmacedo_1_categorical))) # How many points were included in the above interrater correlations?
+
+axmax = ceiling(max(c(subset(vocdat,!is.na(humnumcansyl_awarlaumont2_1_categorical)&!is.na(humnumcansyl_gmacedo_1_categorical))$humnumcansyl_awarlaumont2_1_categorical,subset(vocdat,!is.na(humnumcansyl_awarlaumont2_1_categorical)&!is.na(humnumcansyl_gmacedo_1_categorical))$humnumcansyl_gmacedo_1_categorical)))
+quartz(width=5,height=5)
+par(mfrow=c(1,1))
+boxplot(humnumcansyl_gmacedo_1_categorical ~factor(humnumcansyl_awarlaumont2_1_categorical,levels=0:axmax),data=subset(vocdat,!is.na(humnumcansyl_awarlaumont2_1_categorical)&!is.na(humnumcansyl_gmacedo_1_categorical)),ylim=c(0,axmax),xlim=c(.5,4.5),main="Listener 1 vs. Listener 3 syllable counts",xlab="Listener 1 canonical syllable count",ylab="Listener 3 canonical syllable count")
+if (nocrylauveg & nooverlap){
+	quartz.save("~/RamsdellWarlaumontCollab/StatisticalResults/awarlaumont2_vs_gmacedo_canonicalsyllablecounts_avg_nocrylaughveg_nooverlap.pdf",type="pdf")
+} else if (nocrylauveg & !nooverlap){
+	quartz.save("~/RamsdellWarlaumontCollab/StatisticalResults/awarlaumont2_vs_gmacedo_canonicalsyllablecounts_avg_nocrylaughveg.pdf",type="pdf")
+} else if (!nocrylauveg & nooverlap){	
+	quartz.save("~/RamsdellWarlaumontCollab/StatisticalResults/awarlaumont2_vs_gmacedo_canonicalsyllablecounts_avg_nooverlap.pdf",type="pdf")
+} else if (!nocrylauveg & !nooverlap){
+	quartz.save("~/RamsdellWarlaumontCollab/StatisticalResults/awarlaumont2_vs_gmacedo_canonicalsyllablecounts_avg.pdf",type="pdf")
+}
+
+
 # Get gmacedo_1 and afontana5_1 interrater correlations
 cor.test(vocdat$humnumanysyl_gmacedo_1,vocdat$humnumanysyl_afontana5_1,method="spearman",exact=F,na.rm=T)
 cor.test(vocdat$humnumcansyl_gmacedo_1,vocdat$humnumcansyl_afontana5_1,method="spearman",exact=F,na.rm=T)
 nrow(subset(vocdat,!is.na(humnumcansyl_gmacedo_1)&!is.na(humnumcansyl_afontana5_1))) # How many points were included in the above interrater correlations?
+
+# Get gmacedo_1_categorical and afontana5_1_categorical interrater correlations
+cor.test(vocdat$humnumanysyl_gmacedo_1_categorical,vocdat$humnumanysyl_afontana5_1_categorical,method="spearman",exact=F,na.rm=T)
+cor.test(vocdat$humnumcansyl_gmacedo_1_categorical,vocdat$humnumcansyl_afontana5_1_categorical,method="spearman",exact=F,na.rm=T)
+nrow(subset(vocdat,!is.na(humnumcansyl_gmacedo_1_categorical)&!is.na(humnumcansyl_afontana5_1_categorical))) # How many points were included in the above interrater correlations?
+
+axmax = ceiling(max(c(subset(vocdat,!is.na(humnumcansyl_gmacedo_1_categorical)&!is.na(humnumcansyl_afontana5_1_categorical))$humnumcansyl_gmacedo_1_categorical,subset(vocdat,!is.na(humnumcansyl_gmacedo_1_categorical)&!is.na(humnumcansyl_afontana5_1_categorical))$humnumcansyl_afontana5_1_categorical)))
+quartz(width=5,height=5)
+par(mfrow=c(1,1))
+boxplot(humnumcansyl_afontana5_1_categorical ~factor(humnumcansyl_gmacedo_1_categorical,levels=0:axmax),data=subset(vocdat,!is.na(humnumcansyl_gmacedo_1_categorical)&!is.na(humnumcansyl_afontana5_1_categorical)),ylim=c(0,axmax),xlim=c(.5,4.5),main="Listener 3 vs. Listener 2 syllable counts",xlab="Listener 3 canonical syllable count",ylab="Listener 2 canonical syllable count")
+if (nocrylauveg & nooverlap){
+	quartz.save("~/RamsdellWarlaumontCollab/StatisticalResults/gmacedo_vs_afontana5_canonicalsyllablecounts_avg_nocrylaughveg_nooverlap.pdf",type="pdf")
+} else if (nocrylauveg & !nooverlap){
+	quartz.save("~/RamsdellWarlaumontCollab/StatisticalResults/gmacedo_vs_afontana5_canonicalsyllablecounts_avg_nocrylaughveg.pdf",type="pdf")
+} else if (!nocrylauveg & nooverlap){	
+	quartz.save("~/RamsdellWarlaumontCollab/StatisticalResults/gmacedo_vs_afontana5_canonicalsyllablecounts_avg_nooverlap.pdf",type="pdf")
+} else if (!nocrylauveg & !nooverlap){
+	quartz.save("~/RamsdellWarlaumontCollab/StatisticalResults/gmacedo_vs_afontana5_canonicalsyllablecounts_avg.pdf",type="pdf")
+}
 
 # Get leave-one-child-out cross-validation predictions
 # Pilot work showed gam to be better than pca and svr
@@ -426,7 +484,7 @@ if (nocrylauveg & nooverlap){
 # Plot human-judged canonical-to-all-syllables ratio vs. age and machine-estimated canonical-to-all-syllables ratio vs. age
 quartz(width=9,height=5)
 par(mfrow=c(1,2))
-plot(subset(daydat,!is.na(AveHumNumAnySyl_avg))$AgeInDays,subset(daydat,!is.na(AveHumNumAnySyl_avg))$AveHumNumCanSyl_avg/subset(daydat,!is.na(AveHumNumAnySyl_avg))$AveHumNumAnySyl_avg,main="Human listener",xlab="Age in days",ylab="Human-judged total syllables per utterance") 
+plot(subset(daydat,!is.na(AveHumNumAnySyl_avg))$AgeInDays,subset(daydat,!is.na(AveHumNumAnySyl_avg))$AveHumNumCanSyl_avg/subset(daydat,!is.na(AveHumNumAnySyl_avg))$AveHumNumAnySyl_avg,main="Human listener",xlab="Age in days",ylab="Human-judged canonical-to-all-syllables ratio") 
 abline(lm(subset(daydat,!is.na(AveHumNumAnySyl_avg))$AveHumNumCanSyl_avg/subset(daydat,!is.na(AveHumNumAnySyl_avg))$AveHumNumAnySyl_avg ~subset(daydat,!is.na(AveHumNumAnySyl_avg))$AgeInDays))
 plot(daydat$AgeInDays,daydat$AveLooCanSylEstPCAGAM/daydat$AveLooAnySylEstPCAGAM,main="Machine estimation",xlab="Age in days",ylab="Machine estimated canonical-to-all-syllables ratio");
 abline(lm(daydat$AveLooCanSylEstPCAGAM/daydat$AveLooAnySylEstPCAGAM ~daydat$AgeInDays))
