@@ -112,7 +112,9 @@ cor.test(vocdat$numsalons,vocdat$humnumcansyl_afontana5_1,method="spearman",exac
 cor.test(vocdat$numsalons,vocdat$humnumanysyl_gmacedo_1,method="spearman",exact=F,na.rm=T)
 cor.test(vocdat$numsalons,vocdat$humnumcansyl_gmacedo_1,method="spearman",exact=F,na.rm=T)
 cor.test(vocdat$numsalons,vocdat$humnumanysyl_avg,method="spearman",exact=F,na.rm=T)
+spearman.ci(vocdat$numsalons,vocdat$humnumanysyl_avg,nrep=1000,conf.level=.95)
 cor.test(vocdat$numsalons,vocdat$humnumcansyl_avg,method="spearman",exact=F,na.rm=T)
+spearman.ci(vocdat$numsalons,vocdat$humnumcansyl_avg,nrep=1000,conf.level=.95)
 
 cor.test(vocdat$numlmksyl,vocdat$humnumanysyl_awarlaumont2_1,method="spearman",exact=F,na.rm=T)
 cor.test(vocdat$numlmksyl,vocdat$humnumcansyl_awarlaumont2_1,method="spearman",exact=F,na.rm=T)
@@ -121,7 +123,9 @@ cor.test(vocdat$numlmksyl,vocdat$humnumcansyl_afontana5_1,method="spearman",exac
 cor.test(vocdat$numlmksyl,vocdat$humnumanysyl_gmacedo_1,method="spearman",exact=F,na.rm=T)
 cor.test(vocdat$numlmksyl,vocdat$humnumcansyl_gmacedo_1,method="spearman",exact=F,na.rm=T)
 cor.test(vocdat$numlmksyl,vocdat$humnumanysyl_avg,method="spearman",exact=F,na.rm=T)
+spearman.ci(vocdat$numlmksyl,vocdat$humnumanysyl_avg,nrep=1000,conf.level=.95)
 cor.test(vocdat$numlmksyl,vocdat$humnumcansyl_avg,method="spearman",exact=F,na.rm=T)
+spearman.ci(vocdat$numlmksyl,vocdat$humnumcansyl_avg,nrep=1000,conf.level=.95)
 
 cor.test(vocdat$numdjwsyl,vocdat$humnumanysyl_awarlaumont2_1,method="spearman",exact=F,na.rm=T)
 cor.test(vocdat$numdjwsyl,vocdat$humnumcansyl_awarlaumont2_1,method="spearman",exact=F,na.rm=T)
@@ -130,7 +134,9 @@ cor.test(vocdat$numdjwsyl,vocdat$humnumcansyl_afontana5_1,method="spearman",exac
 cor.test(vocdat$numdjwsyl,vocdat$humnumanysyl_gmacedo_1,method="spearman",exact=F,na.rm=T)
 cor.test(vocdat$numdjwsyl,vocdat$humnumcansyl_gmacedo_1,method="spearman",exact=F,na.rm=T)
 cor.test(vocdat$numdjwsyl,vocdat$humnumanysyl_avg,method="spearman",exact=F,na.rm=T)
+spearman.ci(vocdat$numdjwsyl,vocdat$humnumanysyl_avg,nrep=1000,conf.level=.95)
 cor.test(vocdat$numdjwsyl,vocdat$humnumcansyl_avg,method="spearman",exact=F,na.rm=T)
+spearman.ci(vocdat$numdjwsyl,vocdat$humnumcansyl_avg,nrep=1000,conf.level=.95)
 
 cor.test(vocdat$numsphcon,vocdat$humnumanysyl_awarlaumont2_1,method="spearman",exact=F,na.rm=T)
 cor.test(vocdat$numsphcon,vocdat$humnumcansyl_awarlaumont2_1,method="spearman",exact=F,na.rm=T)
@@ -139,7 +145,9 @@ cor.test(vocdat$numsphcon,vocdat$humnumcansyl_afontana5_1,method="spearman",exac
 cor.test(vocdat$numsphcon,vocdat$humnumanysyl_gmacedo_1,method="spearman",exact=F,na.rm=T)
 cor.test(vocdat$numsphcon,vocdat$humnumcansyl_gmacedo_1,method="spearman",exact=F,na.rm=T)
 cor.test(vocdat$numsphcon,vocdat$humnumanysyl_avg,method="spearman",exact=F,na.rm=T)
+spearman.ci(vocdat$numsphcon,vocdat$humnumanysyl_avg,nrep=1000,conf.level=.95)
 cor.test(vocdat$numsphcon,vocdat$humnumcansyl_avg,method="spearman",exact=F,na.rm=T)
+spearman.ci(vocdat$numsphcon,vocdat$humnumcansyl_avg,nrep=1000,conf.level=.95)
 
 cor.test(vocdat$numsphvow,vocdat$humnumanysyl_awarlaumont2_1,method="spearman",exact=F,na.rm=T)
 cor.test(vocdat$numsphvow,vocdat$humnumcansyl_awarlaumont2_1,method="spearman",exact=F,na.rm=T)
@@ -148,7 +156,9 @@ cor.test(vocdat$numsphvow,vocdat$humnumcansyl_afontana5_1,method="spearman",exac
 cor.test(vocdat$numsphvow,vocdat$humnumanysyl_gmacedo_1,method="spearman",exact=F,na.rm=T)
 cor.test(vocdat$numsphvow,vocdat$humnumcansyl_gmacedo_1,method="spearman",exact=F,na.rm=T)
 cor.test(vocdat$numsphvow,vocdat$humnumanysyl_avg,method="spearman",exact=F,na.rm=T)
+spearman.ci(vocdat$numsphvow,vocdat$humnumanysyl_avg,nrep=1000,conf.level=.95)
 cor.test(vocdat$numsphvow,vocdat$humnumcansyl_avg,method="spearman",exact=F,na.rm=T)
+spearman.ci(vocdat$numsphvow,vocdat$humnumcansyl_avg,nrep=1000,conf.level=.95)
 
 
 # Get awarlaumont2_1 and afontana5_1 interrater correlations
